@@ -81,7 +81,7 @@ namespace NNanomsg
             dir = Path.GetDirectoryName(dir);
             if (string.IsNullOrEmpty(dir)) { return null; }
 
-            return Path.Combine(dir, "content", framework, Environment.Is64BitProcess ? "x64" : "x86", libFile);
+            return "";// Path.Combine(dir, "content", framework, "x64", libFile);
         }
 
         static IntPtr LoadWindowsLibrary(string libName, out SymbolLookupDelegate symbolLookup)
@@ -92,14 +92,14 @@ namespace NNanomsg
 
             var paths = new[]
                 {
-                    calculatexdir(assemblyDirectory, "net40", libFile),
-                    Path.Combine(assemblyDirectory, "bin", Environment.Is64BitProcess ? "x64" : "x86", libFile),  
-                    Path.Combine(assemblyDirectory, Environment.Is64BitProcess ? "x64" : "x86", libFile),  
+                    //calculatexdir(assemblyDirectory, "net40", libFile),
+                    //Path.Combine(assemblyDirectory, "bin", Environment.Is64BitProcess ? "x64" : "x86", libFile),  
+                    //Path.Combine(assemblyDirectory, Environment.Is64BitProcess ? "x64" : "x86", libFile),  
                     Path.Combine(assemblyDirectory, libFile),
 
-                    Path.Combine(rootDirectory, "bin", Environment.Is64BitProcess ? "x64" : "x86", libFile),
-                    Path.Combine(rootDirectory, Environment.Is64BitProcess ? "x64" : "x86", libFile),
-                    Path.Combine(rootDirectory, libFile)
+                    //Path.Combine(rootDirectory, "bin", Environment.Is64BitProcess ? "x64" : "x86", libFile),
+                    //Path.Combine(rootDirectory, Environment.Is64BitProcess ? "x64" : "x86", libFile),
+                    //Path.Combine(rootDirectory, libFile)
                 };
 
             foreach (var path in paths)
@@ -135,9 +135,9 @@ namespace NNanomsg
 
             var paths = new[]
                 {
-                    calculatexdir(assemblyDirectory, "net40", libFile),
-                    Path.Combine(rootDirectory, "bin", Environment.Is64BitProcess ? "x64" : "x86", libFile),
-                    Path.Combine(rootDirectory, Environment.Is64BitProcess ? "x64" : "x86", libFile),
+                    //calculatexdir(assemblyDirectory, "net40", libFile),
+                    //Path.Combine(rootDirectory, "bin", Environment.Is64BitProcess ? "x64" : "x86", libFile),
+                    //Path.Combine(rootDirectory, Environment.Is64BitProcess ? "x64" : "x86", libFile),
                     Path.Combine(rootDirectory, libFile),
                     Path.Combine("/usr/local/lib", libFile),
                     Path.Combine("/usr/lib", libFile)
