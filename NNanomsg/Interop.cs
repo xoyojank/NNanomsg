@@ -82,7 +82,7 @@ namespace NNanomsg
 
 			var paths = new[]
 			{
-				CombinePaths(assemblyDirectory, "bin", Is64BitProcess ? "x64" : "x86", libFile),
+				CombinePaths(Is64BitProcess ? "x64" : "x86", libFile),
 				CombinePaths(assemblyDirectory, Is64BitProcess ? "x64" : "x86", libFile),
 				CombinePaths(assemblyDirectory, libFile),
 			};
@@ -119,7 +119,7 @@ namespace NNanomsg
 
 			var paths = new[]
 			{
-				CombinePaths(assemblyDirectory, "bin", Is64BitProcess ? "x64" : "x86", libFile),
+				CombinePaths(Is64BitProcess ? "x64" : "x86", libFile),
 				CombinePaths(assemblyDirectory, Is64BitProcess ? "x64" : "x86", libFile),
 				CombinePaths(assemblyDirectory, libFile),
 				CombinePaths("/usr/local/lib", libFile),
