@@ -78,7 +78,6 @@ namespace NNanomsg
 		static IntPtr LoadWindowsLibrary(string libName, out SymbolLookupDelegate symbolLookup)
 		{
 			string libFile = libName + ".dll";
-			string rootDirectory = AppDomain.CurrentDomain.BaseDirectory;
 			string assemblyDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
 			var paths = new[]
@@ -86,10 +85,6 @@ namespace NNanomsg
 				CombinePaths(assemblyDirectory, "bin", Is64BitProcess ? "x64" : "x86", libFile),
 				CombinePaths(assemblyDirectory, Is64BitProcess ? "x64" : "x86", libFile),
 				CombinePaths(assemblyDirectory, libFile),
-
-				CombinePaths(rootDirectory, "bin", Is64BitProcess ? "x64" : "x86", libFile),
-				CombinePaths(rootDirectory, Is64BitProcess ? "x64" : "x86", libFile),
-				CombinePaths(rootDirectory, libFile)
 			};
 
 			foreach (var path in paths)
@@ -120,14 +115,13 @@ namespace NNanomsg
 		{
 			const int RTLD_NOW = 2;
 			string libFile = "lib" + libName.ToLower() + ".so";
-			string rootDirectory = AppDomain.CurrentDomain.BaseDirectory;
 			string assemblyDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
 			var paths = new[]
 			{
-				CombinePaths(rootDirectory, "bin", Is64BitProcess ? "x64" : "x86", libFile),
-				CombinePaths(rootDirectory, Is64BitProcess ? "x64" : "x86", libFile),
-				CombinePaths(rootDirectory, libFile),
+				CombinePaths(assemblyDirectory, "bin", Is64BitProcess ? "x64" : "x86", libFile),
+				CombinePaths(assemblyDirectory, Is64BitProcess ? "x64" : "x86", libFile),
+				CombinePaths(assemblyDirectory, libFile),
 				CombinePaths("/usr/local/lib", libFile),
 				CombinePaths("/usr/lib", libFile)
 			};
