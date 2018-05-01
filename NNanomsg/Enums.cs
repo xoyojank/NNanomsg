@@ -23,6 +23,8 @@ namespace NNanomsg
         DOMAIN = 12,
         PROTOCOL = 13,
         IPV4ONLY = 14,
+        SOCKET_NAME = 15,
+        RCVMAXSIZE = 16,
         TCP_NODELAY = Constants.NN_TCP_NODELAY,
         SURVEYOR_DEADLINE = Constants.NN_SURVEYOR_DEADLINE,
         REQ_RESEND_IVL = Constants.NN_REQ_RESEND_IVL,

@@ -151,6 +151,21 @@ namespace NNanomsg
         }
 
         /// <summary>
+        /// Maximum message size that can be received, in bytes. Negative value means that the received size is limited only by available addressable memory. The type of this option is int. Default is 1024kB.
+        /// </summary>
+        public int ReceiveMaxSize
+        {
+            get
+            {
+                return GetInt(_socket, SocketOptionLevel.Default, SocketOption.RCVMAXSIZE);
+            }
+            set
+            {
+                SetInt(_socket, SocketOptionLevel.Default, SocketOption.RCVMAXSIZE, value);
+            }
+        }
+
+        /// <summary>
         /// The timeout for send operation on the socket, in milliseconds. If message cannot be sent within the specified timeout, EAGAIN error is returned. Negative value means infinite timeout. The type of the option is int. Default value is -1.
         /// </summary>
         public TimeSpan? SendTimeout
