@@ -153,6 +153,26 @@ namespace NNanomsg
         NN_TCP_NODELAY = 1,
 
         NN_IPC = -2,
-        NN_INPROC = -1;
+        NN_INPROC = -1,
+
+        NN_STAT_ESTABLISHED_CONNECTIONS = 101,
+        NN_STAT_ACCEPTED_CONNECTIONS = 102,
+        NN_STAT_DROPPED_CONNECTIONS = 103,
+        NN_STAT_BROKEN_CONNECTIONS = 104,
+        NN_STAT_CONNECT_ERRORS = 105,
+        NN_STAT_BIND_ERRORS = 106,
+        NN_STAT_ACCEPT_ERRORS = 107,
+
+        NN_STAT_CURRENT_CONNECTIONS = 201,
+        NN_STAT_INPROGRESS_CONNECTIONS = 202,
+        NN_STAT_CURRENT_EP_ERRORS = 203,
+
+        /*  The socket-internal statistics  */
+        NN_STAT_MESSAGES_SENT = 301,
+        NN_STAT_MESSAGES_RECEIVED = 302,
+        NN_STAT_BYTES_SENT = 303,
+        NN_STAT_BYTES_RECEIVED = 304,
+        /*  Protocol statistics  */
+        NN_STAT_CURRENT_SND_PRIORITY = 401;
     }
 }

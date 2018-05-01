@@ -214,6 +214,7 @@ namespace NNanomsg
 			nn_recvmsg = (nn_recvmsg_delegate)Marshal.GetDelegateForFunctionPointer(lookup(nanomsgAddr, "nn_recvmsg"), typeof(nn_recvmsg_delegate));
 			nn_symbol = (nn_symbol_delegate)Marshal.GetDelegateForFunctionPointer(lookup(nanomsgAddr, "nn_symbol"), typeof(nn_symbol_delegate));
 			nn_poll = (nn_poll_delegate)Marshal.GetDelegateForFunctionPointer(lookup(nanomsgAddr, "nn_poll"), typeof(nn_poll_delegate));
+			nn_get_statistic = (nn_get_statistic_delegate)Marshal.GetDelegateForFunctionPointer(lookup(nanomsgAddr, "nn_get_statistic"), typeof(nn_get_statistic_delegate));
 		}
 
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
@@ -310,5 +311,9 @@ namespace NNanomsg
 		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
 		public delegate void nn_poll_delegate(nn_pollfd* fds, int nfds, int timeout);
 		public static nn_poll_delegate nn_poll;
+
+		[UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+		public delegate UInt64 nn_get_statistic_delegate(int s, int stat);
+		public static nn_get_statistic_delegate nn_get_statistic;
 	}
 }

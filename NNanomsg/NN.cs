@@ -111,7 +111,7 @@ namespace NNanomsg
         {
             IntPtr buffer = IntPtr.Zero;
             int rc = Interop.nn_recv(s, ref buffer, Constants.NN_MSG, (int)flags);
-            
+
             if (rc < 0)
             {
                 buf = null;
@@ -126,7 +126,7 @@ namespace NNanomsg
             {
                 buf[i] = Marshal.ReadByte(buffer, i);
             }
-            
+
             int rc_free = Interop.nn_freemsg(buffer);
             Debug.Assert(rc_free == 0);
 
@@ -215,6 +215,11 @@ namespace NNanomsg
         public static string Symbol(int i, out int value)
         {
             return Marshal.PtrToStringAnsi(Interop.nn_symbol(i, out value));
+        }
+
+        public static UInt64 GetStatistic(int s, int stat)
+        {
+            return Interop.nn_get_statistic(s, stat);
         }
     }
 

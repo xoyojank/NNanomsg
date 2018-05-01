@@ -259,7 +259,8 @@ namespace NNanomsg
                     iovec[i].iov_len = buffer.Length;
                     iovec[i].iov_base = (void*)buffer.Buffer;
                     buffer = stream.NextPage(buffer);
-                } while (buffer.Buffer != IntPtr.Zero && i++ < bufferCount);
+                }
+                while (buffer.Buffer != IntPtr.Zero && i++ < bufferCount);
 
                 (*hdr).msg_control = null;
                 (*hdr).msg_controllen = 0;
@@ -377,9 +378,9 @@ namespace NNanomsg
              * In order to prevent managed allocations per receive, we attempt to recycle stream objects.  This
              * will work optimally if the stream is disposed before the next receive call, as in this case each
              * socket class will always reuse the same stream.
-             * 
+             *
              * Disposing the stream will both release its nanomsg-allocated native buffer and return it to its
-             * socket class for reuse.  
+             * socket class for reuse.
              */
 
             var stream = Interlocked.Exchange(ref _recycledReadStream, null);
@@ -388,7 +389,7 @@ namespace NNanomsg
                 stream.Reinitialize(buffer, rc);
             else
                 stream = new NanomsgReadStream(buffer, rc,
-                    _freeReadDisposer ?? (_freeReadDisposer = new NanomsgNativeDisposer() { Socket = (NanomsgSocketBase)this }));
+                _freeReadDisposer ?? (_freeReadDisposer = new NanomsgNativeDisposer() { Socket = (NanomsgSocketBase)this }));
 
             return stream;
         }
@@ -396,6 +397,48 @@ namespace NNanomsg
         void RecycleStream(NanomsgReadStream messageStream)
         {
             _recycledReadStream = messageStream;
+        }
+
+        /// <summary>
+        /// Retrieve statistics from nanomsg socket.
+        /// 	While this API is stable, these statistics are intended for human consumption, to facilitate observability and debugging.
+        /// 	The actual statistics themselves as well as their meanings are unstable, and subject to change without notice.
+        /// 	Programs should not depend on the presence or values of any particular statistic.
+        /// </summary>
+        /// <param name="stat">
+        /// The following statistics are maintained by the nanomsg core framework; others may be present.
+        ///     As those are undocumented, no interpretration should be made from them. Not all statistics are relevant to all transports.
+        ///     For example, the nn_inproc(7) transport does not maintain any of the connection related statistics.
+        ///
+        /// 	NN_STAT_ESTABLISHED_CONNECTIONS
+        /// 	The number of connections successfully established that were initiated from this socket.
+        /// 	NN_STAT_ACCEPTED_CONNECTIONS
+        /// 	The number of connections successfully established that were accepted by this socket.
+        /// 	NN_STAT_DROPPED_CONNECTIONS
+        /// 	The number of established connections that were dropped by this socket.
+        /// 	NN_STAT_BROKEN_CONNECTIONS
+        /// 	The number of established connections that were closed by this socket, typically due to protocol errors.
+        /// 	NN_STAT_CONNECT_ERRORS
+        /// 	The number of errors encountered by this socket trying to connect to a remote peer.
+        /// 	NN_STAT_BIND_ERRORS
+        /// 	The number of errors encountered by this socket trying to bind to a local address.
+        /// 	NN_STAT_ACCEPT_ERRORS
+        /// 	The number of errors encountered by this socket trying to accept a a connection from a remote peer.
+        /// 	NN_STAT_CURRENT_CONNECTIONS
+        /// 	The number of connections currently estabalished to this socket.
+        /// 	NN_STAT_MESSAGES_SENT
+        /// 	The number messages sent by this socket.
+        /// 	NN_STAT_MESSAGES_RECEIVED
+        /// 	The number messages received by this socket.
+        /// 	NN_STAT_BYTES_SENT
+        /// 	The number of bytes sent by this socket.
+        /// 	NN_STAT_BYTES_RECEIVED
+        /// 	The number of bytes received by this socket.
+        /// </param>
+        /// <returns>On success, the value of the statistic is returned, otherwise (uint64_t)-1 is returned.</returns>
+        UInt64 GetStatistic(int stat)
+        {
+            return Interop.nn_get_statistic(_socket, stat);
         }
 
         class NanomsgNativeDisposer : INativeDisposer<NanomsgReadStream>
